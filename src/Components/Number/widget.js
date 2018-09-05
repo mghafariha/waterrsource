@@ -1,9 +1,13 @@
 import React from 'react';
  const NumberWid=({value,internalName,onChange})=>(
 
-    <input type='number'
-           id={internalName}
-           value={value}
-           onChange={onChange}/>
+    <input id={internalName}
+    name={internalName}
+    type='number'
+    
+    onChange={onChange}
+    value={value || ''}
+   
+/>
  )
  export default NumberWid

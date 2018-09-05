@@ -11,7 +11,7 @@ export class Form extends React.Component{
             
         <div className='form'>
            
-            <ItemForm/>
+            {/* <ItemForm/> */}
             <br/>
             <AllItems/>
             </div>
