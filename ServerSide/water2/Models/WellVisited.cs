@@ -40,6 +40,7 @@ namespace Water2.Models
         public string Pipeline { get; set; }
         public decimal WellDepth { get; set; }
         public decimal WaterSurface { get; set; }
+        public int Profile { get; set; }
 
 
     }

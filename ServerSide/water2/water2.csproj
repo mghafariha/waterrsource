@@ -151,6 +151,10 @@
     <Compile Include="Migrations\201808270705587_init.Designer.cs">
       <DependentUpon>201808270705587_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809100746310_002.cs" />
+    <Compile Include="Migrations\201809100746310_002.Designer.cs">
+      <DependentUpon>201809100746310_002.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\WaterResourceContext.cs" />
     <Compile Include="Models\WellProfiles.cs" />
@@ -214,6 +218,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201808270705587_init.resx">
       <DependentUpon>201808270705587_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809100746310_002.resx">
+      <DependentUpon>201809100746310_002.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

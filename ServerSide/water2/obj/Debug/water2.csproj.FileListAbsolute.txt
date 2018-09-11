@@ -36,3 +36,4 @@ C:\Users\nikaein\Desktop\WaterResource\WaterResource\water2\obj\Debug\water2.pdb
 C:\Users\nikaein\Desktop\WaterResource\WaterResource\water2\obj\Debug\water2.Migrations.init.resources
 C:\Users\nikaein\Desktop\WaterResource\WaterResource\water2\obj\Debug\water2.csproj.GenerateResource.Cache
 C:\Users\nikaein\Desktop\WaterResource\WaterResource\water2\obj\Debug\water2.csprojResolveAssemblyReference.cache
+C:\Users\nikaein\Desktop\WaterResource\WaterResource\water2\obj\Debug\water2.Migrations._002.resources

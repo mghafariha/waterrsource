@@ -22,3 +22,25 @@
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
     </div>
 </div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+
+
+@*<script>
+
+    var json = JSON.stringify({ ID: 23, "LongitudeWell": "salam" })
+   
+
+    $.ajax({
+        url: '/api/WellVisiteds/23',
+        type: 'PUT',
+        contentType: "application/json; charset=utf-8",
+        data: json,
+        success: function (results) {
+            console.log('done')
+        },
+        error: function (request, message, error) {
+            console.log(request, message, error);
+        }
+    })
+</script>*@
+
