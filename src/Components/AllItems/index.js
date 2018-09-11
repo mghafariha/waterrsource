@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {moment} from 'moment-jalaali';
 import ItemRow from '../ItemRow';
 import ItemForm from '../ItemForm';
-import {getAllItems} from '../../api';
+import {getAllItems,removeItem} from '../../api';
 import {setAllItems,deleteItem} from '../../store/action'
 import 'react-table/react-table.css';
 import Modal from 'react-modal';
@@ -30,7 +30,7 @@ class AllItems extends React.Component{
 
     constructor(props){
         super(props);
-        this.state={datatsource:[],column:[], 
+        this.state={column:[], 
           showModal: false,
           selectedItem:{},formName:''
         }
@@ -48,22 +48,26 @@ class AllItems extends React.Component{
     handleCloseModal =(e)=> {
       this.setState({ showModal: false });
     }
-   handleChange=(e)=>{
+    removeClick=(row)=>{
+     removeItem(row['ID']).then((response)=>{
+     this.props.dispatch(deleteItem(row))
+      }).catch((e)=>console.log(e))
+    }
    
-     this.props.dispatch(deleteItem(e));
-     this.setState({datasource:this.props.items.map((itm,index)=>({...itm,key:index}))})
-   }
   componentDidMount=(e)=>{
 
     getAllItems().then((response)=>{
         
         this.props.dispatch(setAllItems((response.data)));
-       
-       this.setState({datasource:this.props.items.map((itm,index)=>({...itm,key:index}))})   
+      
+       this.setState({datasource:this.props.items.map((itm,index)=>({...itm,key:index}))})   ;
+       console.log('datasource',this.state.datasource)
+     
 
     })
   }
     render(){
+      
         Object.assign(ReactTableDefaults, {
             defaultPageSize: 5,
             minRows: 3
@@ -94,9 +98,10 @@ class AllItems extends React.Component{
              <span>
            <button onClick={ ()=> {this.setState({ showModal: true,selectedItem:row.original,formName:'Display' });}}>نمایش</button>
             <button onClick={ ()=> {this.setState({ showModal: true,selectedItem:row.original,formName:'Edit' });}}>ویرایش</button>
-           <button onClick={()=> {this.props.dispatch(deleteItem(row.original));
-                            this.setState({datasource:this.props.items.map((itm,index)=>({...itm,key:index}))})}} >حذف</button>
-           
+           <button onClick={()=> {removeItem(row.original['ID']).then((response)=>{
+                                                                          this.props.dispatch(deleteItem(row.original))
+                                                                            }).catch((e)=>console.log(e))}} >حذف</button>
+                                                                                
            <div>
                 <Modal 
                    isOpen={this.state.showModal}
@@ -104,7 +109,7 @@ class AllItems extends React.Component{
                    onRequestClose={this.handleCloseModal}
                 >
                   <ItemForm formName={this.state.formName} selectedItem={this.state.selectedItem}/>
-                  <button onClick={this.handleCloseModal}>Close Modal</button>
+                  <button onClick={this.handleCloseModal}>بستن</button>
                 </Modal>
               </div>
           
@@ -117,11 +122,12 @@ class AllItems extends React.Component{
 
 
 
-        console.log('items', this.props.items);
+       
         return(
-           
-            <ReactTable
-                    data={this.state.datasource}
+           <div>
+             {/* <ColumnsFilter /> */}
+              <ReactTable
+                    data={this.props.items.map((itm,index)=>({...itm,key:index}))}
                     noDataText="اطلاعاتی وجود ندارد"
                     filterable
                     defaultFilterMethod={(filter, row) =>
@@ -129,6 +135,7 @@ class AllItems extends React.Component{
                     columns={columns}
                     className="-striped -highlight"
                 />
+            </div>
             //  <BootstrapTable   
             
             //     pagination={true}
@@ -138,6 +145,7 @@ class AllItems extends React.Component{
             //     /> 
              
         )
+        
     }
 }
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const URL='http://localhost:1980/'
+export const URL='http://localhost:99/'
 const header={
     headers: {
         "Accept": "application/json;odata=verbose",
@@ -15,11 +15,20 @@ export const getItem=(id)=>axios.get(
    header
 )
 export const saveItem=(data)=>axios.post(
-    URL + "api/WellVisiteds",data,
+    URL + "api/WellVisiteds",  JSON.stringify({ id:data['ID'], wellVisited: data }),
     header
 )
-export const updateItem=(data)=>axios.post(
-    URL + "PutWellVisited/",data['ID'],data,
+export const updateItem=(data)=>axios.put(
+    URL + "api/WellVisiteds/23",data,
+    header
+)
+
+export const removeItem=(id)=>axios.delete(
+    URL+"api/WellVisiteds/"+id,
+    header
+)
+export const getWellProfile=(id)=>axios.get(
+    URL+"api/WellProfiles/"+id,
     header
 )
 // export const saveItem=()=>axios.post(

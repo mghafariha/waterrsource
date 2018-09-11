@@ -1,5 +1,5 @@
 import thunk from 'redux-thunk'
-import {items,item} from './reducer'
+import {items,item,infractionItem} from './reducer'
 import {
  combineReducers,
  createStore,
@@ -8,7 +8,8 @@ import {
 } from 'redux';
 const reducer=combineReducers({
     items,
-    item
+    item,
+    infractionItem
 });
 const store=createStore(reducer,applyMiddleware(thunk))
 export default store
