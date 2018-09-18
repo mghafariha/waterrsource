@@ -12,7 +12,7 @@ class Date extends React.Component {
     }
     handleChange=(e)=>{
        console.log('date',e);
-        this.props.dispatch(setFieldValue(this.props.internalName,e));
+        this.props.dispatch(setFieldValue(this.props.internalName,e,this.props.storeIndex));
         console.log('date value',e)
     }
     render() {
@@ -20,6 +20,6 @@ class Date extends React.Component {
         return this.props.render({internalName:this.props.internalName,value,onChange:this.handleChange})
     }
 }
-const mapStateToProps =(state)=> ({ item:state.item })
+const mapStateToProps =(state,props)=> ({ item:state.item[props.storeIndex] })
 
 export default connect(mapStateToProps)(Date)

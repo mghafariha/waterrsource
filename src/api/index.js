@@ -6,7 +6,7 @@ const header={
         'Content-Type': 'application/json;charset=UTF-8'
     }
 }
-export const getAllItems=()=>axios.get(
+export const getAllVisitItem=()=>axios.get(
     URL + "/api/WellVisiteds",
     header
 )
@@ -15,16 +15,16 @@ export const getItem=(id)=>axios.get(
    header
 )
 export const saveItem=(data)=>axios.post(
-    URL + "api/WellVisiteds",  JSON.stringify({ id:data['ID'], wellVisited: data }),
+    URL + "api/WellVisiteds",data ,
     header
 )
 export const updateItem=(data)=>axios.put(
-    URL + "api/WellVisiteds/23",data,
+    URL + "api/WellVisiteds/"+data.ID,data,
     header
 )
 
-export const removeItem=(id)=>axios.delete(
-    URL+"api/WellVisiteds/"+id,
+export const removeItem=(id,storeIndex)=>axios.delete(
+    URL+"api/"+storeIndex +"/"+id,
     header
 )
 export const getWellProfile=(id)=>axios.get(

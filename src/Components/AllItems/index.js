@@ -3,10 +3,11 @@ import {connect} from 'react-redux';
 import {moment} from 'moment-jalaali';
 import ItemRow from '../ItemRow';
 import ItemForm from '../ItemForm';
-import {getAllItems,removeItem} from '../../api';
+import {getAllVisitItem,removeItem} from '../../api';
 import {setAllItems,deleteItem} from '../../store/action'
 import 'react-table/react-table.css';
 import Modal from 'react-modal';
+import ColumnsFilter from '../ColumnsFilter';
 
 // import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'; 
 // import BootstrapTable from 'react-bootstrap-table-next';
@@ -56,12 +57,14 @@ class AllItems extends React.Component{
    
   componentDidMount=(e)=>{
 
-    getAllItems().then((response)=>{
+    getAllVisitItem().then((response)=>{
         
         this.props.dispatch(setAllItems((response.data)));
       
        this.setState({datasource:this.props.items.map((itm,index)=>({...itm,key:index}))})   ;
-       console.log('datasource',this.state.datasource)
+       console.log('datasource',this.state.datasource);
+      this.setState({columns:[{'Header':'شناسه','accessor':'ID'},{'Header':'طول جغرافیایی','accessor':'LongitudeWell'},{'Header':'عرض جغرافیایی','accessor':'LatitudeWell'},{'Header':'DateCensus','accessor':'DateCensus'},{'Header':'کد مالک','accessor':'OwnerCode'},{'Header':'موبایل مالک' ,'accessor':'OwnerMobile'},
+      {'Header':'حجم مجاز برداشت(متر مکعب در سال)','accessor':'ApprovedVolume'},{'Header':'ساعت کارکرد سالانه' ,'accessor':'WorkHours'},{'Header':'میزان قدرت(برق)' ,'accessor':'PowerlevelElectricity'},{'Header':'میزان قدرت (دیزل)'  ,'accessor':'PowerlevelDiesel'},{'Header':'نوع مصرف آب بر اساس پرونده بهره برداری'  ,'accessor':'KindConsumptionWater'},{'Header':'لوله جدار' ,'accessor':'KindPipeline'}]})
      
 
     })
@@ -125,7 +128,10 @@ class AllItems extends React.Component{
        
         return(
            <div>
-             {/* <ColumnsFilter /> */}
+             <ColumnsFilter  columns={this.state.columns} 
+                        onChange={(values) => this.onChange(this.state.columns, values)}
+                        
+                      /> 
               <ReactTable
                     data={this.props.items.map((itm,index)=>({...itm,key:index}))}
                     noDataText="اطلاعاتی وجود ندارد"

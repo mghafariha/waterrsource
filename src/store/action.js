@@ -1,18 +1,20 @@
-import {ADD_ITEM,SET_ALL_ITEMS,SET_FIELD_VALUE,SET_ITEM,DELETE_ITEM,UPDATE_ITEM,SET_INFRACTION_FIELD_VALUE,SET_INFRACTION_ITEM} from './constant';
+import {ADD_ITEM,SET_ALL_ITEMS,SET_FIELD_VALUE,SET_ITEM,DELETE_ITEM,UPDATE_ITEM,SET_INFRACTION_FIELD_VALUE,SET_INFRACTION_ITEM,SET_COLUMNS,CHECKED_COLUMN} from './constant';
 
-export const addItem=(item)=>({
+export const addItem=(item,index)=>({
 
     type:ADD_ITEM,
-    item
+    item,
+    index
 })
-export const setAllItems=(data)=>({
+export const setAllItems=(index,data)=>({
 
     type:SET_ALL_ITEMS,
-    data
+    index,data
 })
-export const setFieldValue=(internalName,value)=>({
-type:SET_FIELD_VALUE,
-field:{internalName,value}
+export const setFieldValue=(internalName,value,index)=>({
+    type:SET_FIELD_VALUE,
+    field:{internalName,value},
+    index:index
 })
 export const setInfractionFieldValue=(internalName,value)=>({
 type:SET_INFRACTION_FIELD_VALUE,
@@ -23,15 +25,28 @@ export const setInfractionItem=(item)=>({
     type:SET_INFRACTION_ITEM,
     item:item
 })
-export const setItem=(item)=>({
+export const setItem=(item,index)=>({
     type:SET_ITEM,
-    item:item
+    item:item,
+    index:index
 })
-export const deleteItem=(item)=>({
+export const deleteItem=(item,index)=>({
     type:DELETE_ITEM,
-    item:item
+    item,index
 })
-export const changeItem=(item)=>({
+export const changeItem=(item,index)=>({
     type:UPDATE_ITEM,
-    item:item
+    item:item,
+    index:index
+})
+export const setColumns=(index,columns)=>({
+    type:SET_COLUMNS,
+     index,columns
+})
+export const checkedColumn=(index,isChecked,internalName)=>({
+
+    type:CHECKED_COLUMN,
+    index,
+    isChecked,
+    internalName
 })

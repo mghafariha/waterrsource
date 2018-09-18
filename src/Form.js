@@ -1,20 +1,32 @@
 import React from 'react';
+import { Link, Route } from 'react-router-dom';
 
 
-import AllItems from './Components/AllItems';
-import ItemForm from './Components/ItemForm';
+import Visit from './Forms/Well/Visit'
 
 
 export class Form extends React.Component{
+constructor(props){
+    super(props);
+}
     render(){
         return (
-            
-        <div className='form'>
+            <div>
+            <ul>
+          
+            <li><Link to="/Visit">Visit </Link></li>
            
-            {/* <ItemForm/> */}
-            <br/>
-            <AllItems/>
-            </div>
+          </ul>
+         
+          <Route path="/Visit" component={Visit} />
+          
+          </div>
+        // <div className='form'>
+           
+        //     {/* <ItemForm/> */}
+        //     <br/>
+        //     <Visit  />
+        //     </div>
             
           
           )

@@ -11,7 +11,7 @@ class Text extends React.Component {
     }
     // if not arrow function you should bind handleChange in constructor => this.handleChange =  this.handleChange.bind(this)
     handleChange=(e)=>{
-       this.props.dispatch(setFieldValue(this.props.internalName,e.target.value));
+       this.props.dispatch(setFieldValue(this.props.internalName,e.target.value,this.props.storeIndex));
     }
    
         render() {
@@ -20,5 +20,8 @@ class Text extends React.Component {
         } 
     }
 
-const mapStateToProps=(state,props)=>({item:state.item})
+const mapStateToProps=(state,props)=>({
+    item:state.item[props.storeIndex],
+
+})
 export default connect(mapStateToProps)(Text)

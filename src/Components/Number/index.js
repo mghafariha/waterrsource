@@ -9,7 +9,7 @@ class Number extends React.Component {
     }
     // if not arrow function you should bind handleChange in constructor => this.handleChange =  this.handleChange.bind(this)
     handleChange=(e)=>{
-       this.props.dispatch(setFieldValue(this.props.internalName,e.target.value));
+       this.props.dispatch(setFieldValue(this.props.internalName,e.target.value,this.props.storeIndex));
     }
    
         render() {
@@ -17,5 +17,8 @@ class Number extends React.Component {
             return this.props.render({value,internalName:this.props.internalName,onChange:this.handleChange})
         } 
 }
-const mapStateToProps=(state)=>({item:state.item})
+const mapStateToProps=(state,props)=>(console.log('itemmmm',state.item[props.storeIndex]), {
+    item:state.item[props.storeIndex],
+
+})
 export default connect(mapStateToProps)(Number)
