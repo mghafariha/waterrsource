@@ -8,48 +8,48 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Water2.Models;
+using WaterResource.Models;
 
-namespace Water2.Controllers
+namespace WaterResource.Controllers
 {
     public class WellProfilesController : ApiController
     {
-        private WaterResourceContext db = new WaterResourceContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/WellProfiles
-        public IQueryable<WellProfiles> GetWellProfiles()
+        public IQueryable<WellProfile> GetWellProfiles()
         {
             return db.WellProfiles;
         }
 
         // GET: api/WellProfiles/5
-        [ResponseType(typeof(WellProfiles))]
-        public IHttpActionResult GetWellProfiles(int id)
+        [ResponseType(typeof(WellProfile))]
+        public IHttpActionResult GetWellProfile(int id)
         {
-            WellProfiles wellProfiles = db.WellProfiles.Find(id);
-            if (wellProfiles == null)
+            WellProfile wellProfile = db.WellProfiles.Find(id);
+            if (wellProfile == null)
             {
                 return NotFound();
             }
 
-            return Ok(wellProfiles);
+            return Ok(wellProfile);
         }
 
         // PUT: api/WellProfiles/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutWellProfiles(int id, WellProfiles wellProfiles)
+        public IHttpActionResult PutWellProfile(int id, WellProfile wellProfile)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != wellProfiles.ID)
+            if (id != wellProfile.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(wellProfiles).State = EntityState.Modified;
+            db.Entry(wellProfile).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace Water2.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WellProfilesExists(id))
+                if (!WellProfileExists(id))
                 {
                     return NotFound();
                 }
@@ -71,34 +71,34 @@ namespace Water2.Controllers
         }
 
         // POST: api/WellProfiles
-        [ResponseType(typeof(WellProfiles))]
-        public IHttpActionResult PostWellProfiles(WellProfiles wellProfiles)
+        [ResponseType(typeof(WellProfile))]
+        public IHttpActionResult PostWellProfile(WellProfile wellProfile)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.WellProfiles.Add(wellProfiles);
+            db.WellProfiles.Add(wellProfile);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = wellProfiles.ID }, wellProfiles);
+            return CreatedAtRoute("DefaultApi", new { id = wellProfile.ID }, wellProfile);
         }
 
         // DELETE: api/WellProfiles/5
-        [ResponseType(typeof(WellProfiles))]
-        public IHttpActionResult DeleteWellProfiles(int id)
+        [ResponseType(typeof(WellProfile))]
+        public IHttpActionResult DeleteWellProfile(int id)
         {
-            WellProfiles wellProfiles = db.WellProfiles.Find(id);
-            if (wellProfiles == null)
+            WellProfile wellProfile = db.WellProfiles.Find(id);
+            if (wellProfile == null)
             {
                 return NotFound();
             }
 
-            db.WellProfiles.Remove(wellProfiles);
+            db.WellProfiles.Remove(wellProfile);
             db.SaveChanges();
 
-            return Ok(wellProfiles);
+            return Ok(wellProfile);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,7 +110,7 @@ namespace Water2.Controllers
             base.Dispose(disposing);
         }
 
-        private bool WellProfilesExists(int id)
+        private bool WellProfileExists(int id)
         {
             return db.WellProfiles.Count(e => e.ID == id) > 0;
         }

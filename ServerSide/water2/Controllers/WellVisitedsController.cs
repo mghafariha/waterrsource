@@ -6,16 +6,15 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Water2.Models;
+using WaterResource.Models;
 
-namespace Water2.Controllers
+namespace WaterResource.Controllers
 {
     public class WellVisitedsController : ApiController
     {
-        private WaterResourceContext db = new WaterResourceContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/WellVisiteds
         public IQueryable<WellVisited> GetWellVisiteds()
@@ -36,16 +35,15 @@ namespace Water2.Controllers
             return Ok(wellVisited);
         }
 
-        // PUT:
+        // PUT: api/WellVisiteds/5
         [ResponseType(typeof(void))]
-        [HttpPut]
         public IHttpActionResult PutWellVisited(int id, WellVisited wellVisited)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
+
             if (id != wellVisited.ID)
             {
                 return BadRequest();
@@ -73,8 +71,8 @@ namespace Water2.Controllers
         }
 
         // POST: api/WellVisiteds
-        [ResponseType(typeof(WellVisited))]                 
-        public IHttpActionResult PostWellVisited(int id,WellVisited wellVisited)
+        [ResponseType(typeof(WellVisited))]
+        public IHttpActionResult PostWellVisited(WellVisited wellVisited)
         {
             if (!ModelState.IsValid)
             {
@@ -89,7 +87,6 @@ namespace Water2.Controllers
 
         // DELETE: api/WellVisiteds/5
         [ResponseType(typeof(WellVisited))]
-        [HttpDelete]
         public IHttpActionResult DeleteWellVisited(int id)
         {
             WellVisited wellVisited = db.WellVisiteds.Find(id);

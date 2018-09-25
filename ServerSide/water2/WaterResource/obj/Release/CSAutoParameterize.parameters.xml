@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="WaterResourceContext-Web.config Connection String" description="WaterResourceContext Connection String used in web.config by the application to access the database." defaultValue="Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=WaterResourceContext-20180709021929; Integrated Security=True; MultipleActiveResultSets=True; AttachDbFilename=|DataDirectory|WaterResourceContext-20180709021929.mdf" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\nikaein\\Desktop\\WaterResource\\WaterResource\\WaterResource\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='WaterResourceContext']/@connectionString" />
+  </parameter>
+</parameters>
