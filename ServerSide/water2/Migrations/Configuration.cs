@@ -1,31 +1,23 @@
-namespace WaterResource.Migrations
+namespace water2.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<WaterResource.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Water2.Models.WaterResourceContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(WaterResource.Models.ApplicationDbContext context)
+        protected override void Seed(Water2.Models.WaterResourceContext context)
         {
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            //  to avoid creating duplicate seed data.
         }
     }
 }

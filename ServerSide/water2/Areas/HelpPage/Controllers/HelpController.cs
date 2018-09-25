@@ -1,18 +1,15 @@
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using WaterResource.Areas.HelpPage.ModelDescriptions;
-using WaterResource.Areas.HelpPage.Models;
+using water2.Areas.HelpPage.Models;
 
-namespace WaterResource.Areas.HelpPage.Controllers
+namespace water2.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.
     /// </summary>
     public class HelpController : Controller
     {
-        private const string ErrorViewName = "Error";
-
         public HelpController()
             : this(GlobalConfiguration.Configuration)
         {
@@ -42,22 +39,7 @@ namespace WaterResource.Areas.HelpPage.Controllers
                 }
             }
 
-            return View(ErrorViewName);
-        }
-
-        public ActionResult ResourceModel(string modelName)
-        {
-            if (!String.IsNullOrEmpty(modelName))
-            {
-                ModelDescriptionGenerator modelDescriptionGenerator = Configuration.GetModelDescriptionGenerator();
-                ModelDescription modelDescription;
-                if (modelDescriptionGenerator.GeneratedModels.TryGetValue(modelName, out modelDescription))
-                {
-                    return View(modelDescription);
-                }
-            }
-
-            return View(ErrorViewName);
+            return View("Error");
         }
     }
 }

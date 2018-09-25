@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace WaterResource
+namespace water2
 {
     public class FilterConfig
     {
