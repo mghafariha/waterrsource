@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {connect} from 'react-redux'
 import {checkedColumn} from '../../store/action';
 
@@ -20,8 +20,11 @@ class CheckBox extends React.Component{
         return (<input id={this.props.internalName}
     name={this.props.internalName}
     type='checkbox'
-    value={this.props.value}
-    onChange={this.handleChange}  />
+    
+    onChange={this.handleChange} 
+
+    checked={this.props.isChecked}
+     />
     
     )
     }

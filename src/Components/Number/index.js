@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { setFieldValue } from '../../store/action';
+
 class Number extends React.Component {
 
     constructor(props) {
@@ -19,6 +20,6 @@ class Number extends React.Component {
 }
 const mapStateToProps=(state,props)=>(console.log('itemmmm',state.item[props.storeIndex]), {
     item:state.item[props.storeIndex],
-
+    field:state.columns[props.storeIndex].find((field)=>field.accessor==props.internalName)
 })
 export default connect(mapStateToProps)(Number)

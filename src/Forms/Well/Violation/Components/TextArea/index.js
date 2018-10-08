@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { changeDetailFieldValue } from '../../../../store/action';
+import { changeDetailFieldValue } from '../../../../../store/action';
 
 
 

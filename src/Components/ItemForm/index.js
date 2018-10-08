@@ -17,19 +17,16 @@ class ItemForm extends React.Component{
         }    
         componentDidMount=(e)=>{
            // let itmId=getUrlVars()['ID'];
-          
-        
             this.props.dispatch(setItem(this.props.selectedItem,this.props.storeIndex));
             
         }
-
         handleSubmit=(e)=>{
             e.preventDefault();
-           
+           console.log('itemsave',this.props.item);
             if(!this.props.item['ID'])
             {
-            saveItem(this.props.item).then((response)=>{
-                console.log('update res', response);
+              saveItem(this.props.item,this.props.storeIndex).then((response)=>{
+                alert('آیتم جدید با موفقیت ذخیره شد');
         
                 this.props.dispatch(addItem(this.props.item,this.props.storeIndex));
                 console.log('itemssssss',this.props.items)
@@ -37,11 +34,11 @@ class ItemForm extends React.Component{
               //  this.getDescription.value='';
                this.props.dispatch(setItem({},this.props.storeIndex));
         
-            }).catch((error)=>console.log(error));
-        }
+              }).catch((error)=>console.log(error));
+            }
         else{
           
-            updateItem(this.props.item).then((response)=>{
+            updateItem(this.props.item,this.props.storeIndex).then((response)=>{
                
         
                 this.props.dispatch(changeItem(this.props.item,this.props.storeIndex));
@@ -59,14 +56,15 @@ class ItemForm extends React.Component{
         return (
             <form onSubmit={this.handleSubmit}>
                 <h1></h1>
-               { this.props.fields.map((field,index)=><Field 
+               { this.props.fields.map((field,index)=> <Field 
                         key={field.accessor}
                         internalName={field.accessor}
                         storeIndex={this.props.storeIndex}
                         formName={this.props.formName}
                       
                     />)}
-                <button type="submit">Submit</button>
+                    
+                    {this.props.formName!='Display'?  <button  type="submit">ذخیره</button>:null}
             </form>
 
         )

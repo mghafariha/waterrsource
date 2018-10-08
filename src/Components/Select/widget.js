@@ -5,9 +5,13 @@ const SelectWid=({value,internalName,multiple,options,onChange})=>(
            onChange={onChange}
            multiple={multiple}
            name={internalName}
+          
     >
-    {options.map((opt,index)=>(<option key={index} value={opt} selected={value.indexOf(opt)!=-1?'selected':''} >{opt}</option>))}
+    {options.map((opt,index)=>(<option key={index} value={opt} selected={opt==value?'selected':''} >{opt}</option>))}
 
     </select>
 )
 export default SelectWid
+
+
+

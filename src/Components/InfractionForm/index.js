@@ -1,29 +1,58 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getWellProfile} from '../../api';
+import {getItem, saveItem} from '../../api';
 import TextArea from './Components/TextArea';
 import TextAreaWid from '../TextArea/widget';
 import CheckBox from './Components/CheckBox';
 import CheckBoxWid from '../CheckBox/widget';
 import { setInfractionItem } from '../../store/action';
+import {Criterions} from './Criterions';
+import {setDetailsItem,changeItem,setItem} from '../../store/action';
+import axios from 'axios';
+
+
 
 
 class InfractionForm extends React.Component{
 constructor(props){
     super(props);
-    this.state={profileItem:{}}
+    this.state={profileItem:{}
+                , criterions:[] }
+
 
 }
 componentDidMount=(e)=>{
-    getWellProfile(this.props.selectedItem['Profile']).then((result)=>{
-        console.log('profileItem',result);
-    this.setState({profileItem:result.data});
 
-     }).catch((error)=>console.log(error));
+    getItem(this.props.selectedItem['Index'],this.props.profileIndex).then((result)=>{
+       
+        this.setState({profileItem:result.data});
+        this.setState({criterions:Criterions})
+        this.props.dispatch(setDetailsItem(Criterions.map((itm,index)=>(Object.assign({},{Criterion:itm,Description:'',isChecked:false,rowId:index}))),this.props.storeIndex));
+        }).catch((error)=>console.log(error));
 }
 handleSubmitInfraction=(e)=>{
-    this.props.dispatch(setInfractionItem(this.props.infractionItem))
-    console.log('infraction Item',this.props.infractionItem)
+    e.preventDefault();
+   let violations=this.props.item.rows.filter((itm)=>itm.isChecked);
+   let data={NumberInFraction:violations.length,Violations:violations.reduce((acc,itm)=>acc+itm.Criterion+',','')}
+   
+    saveItem(data,this.props.storeIndex).then((response)=>{
+      let entity=this.props.storeIndex+'Items';
+      let arrayPost=[];
+        violations.forEach(element => {
+            let detail={ Criterion:element.Criterion,Description :element.Description,InfractionsWell:response.data.ID}
+           arrayPost.push( saveItem(detail,entity));
+        });
+        axios.all(arrayPost).then((resp)=>
+        {
+            alert('آیتم جدید با موفقیت ذخیره شد');
+        //  this.props.dispatch(changeItem(this.props.item,this.props.storeIndex));
+        //  this.props.dispatch(setItem({},this.props.storeIndex));
+        });
+          
+    }).catch(
+        (error)=>
+        console.log('error',error));
+  
 }
 render(){
     return(<div>
@@ -42,9 +71,14 @@ render(){
         <div>
             <form onSubmit={this.handleSubmitInfraction}>
                 ثبت تخلف
-            <div><span>معیار 1</span>تخلف<CheckBox render={CheckBoxWid} internalName='measure1Check' /> توضیحات<TextArea render={TextAreaWid} internalName='measure1Description' /></div>
-            <div><span>معیار 2</span>تخلف<CheckBox render={CheckBoxWid} internalName='measure2Check' /> توضیحات<TextArea render={TextAreaWid} internalName='measure2Description' /></div>
-            <div><span>معیار 3</span>تخلف<CheckBox render={CheckBoxWid} internalName='measure3Check' /> توضیحات<TextArea render={TextAreaWid} internalName='measure3Description' /></div>
+                {
+                (this.props.item)&&this.props.item.rows ?
+                  this.props.item.rows.map((crt)=><div key={crt.rowId}>
+                 <span>{crt.Criterion}</span>تخلف<CheckBox render={CheckBoxWid} storeIndex={this.props.storeIndex} internalName='isChecked' rowID={crt.rowId}/> توضیحات<TextArea render={TextAreaWid} rowID={crt.rowId}  storeIndex={this.props.storeIndex} internalName='Description' />
+                  </div>)
+                  :null
+                }
+           
             <button>ثبت تخلف</button>
             </form>
         </div>
@@ -53,5 +87,9 @@ render(){
 }
 
 }
-const mapStateToProps=(state)=>({infractionItem:state.infractionItem})
+const mapStateToProps=(state,props)=>({
+   
+    item:state.item[props.storeIndex],
+    visitItem:state.item[props.visitIndex]
+})
 export default connect(mapStateToProps)(InfractionForm)

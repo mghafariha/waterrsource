@@ -17,18 +17,17 @@ class WellVisitItem extends React.Component{
         }    
         componentDidMount=(e)=>{
             console.log('opennn');
- }
-
-    render(){
+        }
+        render(){
     
-        return(
+            return(
 
-            <div>
-                <ItemForm  storeIndex={this.props.storeIndex} {...this.props} />
-                {this.props.formName=='Display'? <InfractionForm visitedID={this.props.item['ID']} {...this.props} />:null}
-               
-                </div>
-        )
+                <div>
+                    <ItemForm  storeIndex={this.props.storeIndex} {...this.props} />
+                    {this.props.formName=='Display'? <InfractionForm visitedID={this.props.item['ID']} profileID={this.props.item['Index']} {...this.props}  visitIndex={this.props.storeIndex} profileIndex='WellProfiles' storeIndex='WellViolations' />:null}
+                
+                    </div>
+            )
     }
 }
 const mapStateToProps=(state,props)=>({

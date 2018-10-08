@@ -20,5 +20,6 @@ class TextArea extends React.Component {
         return this.props.render({value:value,internalName:this.props.internalName,onChange:this.handleChange})
         }
 }
-const mapStateToProps=state=>({item:state.item})
+const mapStateToProps=(state,props)=>({item:state.item,
+    field:state.columns[props.storeIndex].find((field)=>field.accessor==props.internalName)})
 export default connect(mapStateToProps)(TextArea)

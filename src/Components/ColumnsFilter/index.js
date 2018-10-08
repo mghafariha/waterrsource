@@ -24,8 +24,8 @@ render(){
        {
           this.state.columns.map(col => (
             <label key={col.key}>
-              {col.name}
-              <CheckBox render={CheckBoxWid} internalName={col.accessor} checked={this.state.checkedItems.get(col.accessor)} onChange={this.handleChange} />
+              {col.DisplayName}
+              <CheckBox render={CheckBoxWid} internalName={col.name} checked={this.state.checkedItems.get(col.name)} onChange={this.handleChange} />
             </label>
           ))
         }

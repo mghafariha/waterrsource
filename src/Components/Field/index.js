@@ -14,6 +14,10 @@ import TextAreaWid from '../TextArea/widget';
 import TextArea from '../TextArea';
 import CheckBoxWid from '../CheckBox/widget';
 import CheckBox from '../CheckBox';
+import FileWid from '../File/widget';
+import File from '../File';
+import LookupWid from '../Lookup/widget';
+import Lookup from '../Lookup';
 
 
 class Field extends React.Component{
@@ -33,21 +37,22 @@ class Field extends React.Component{
                 {(() => {
                     switch (type) {
 
-                        case 'Text':
+                        case 'String':
                         return (
                             <div>
                               {formName!=='Display' ? <Text render={TextWid} internalName={this.props.internalName} storeIndex={this.props.storeIndex} /> :
                               <Span internalName={this.props.internalName} value={this.props.item[accessor]} />}
                             </div>
                           );
-                        case 'Number':
+                        case 'Int32':
+                        case 'Decimal':
                             return (
                                 <div>
                                     {formName!=='Display'?<Number render={NumberWid} internalName={this.props.internalName}  className={'input input-' + this.props.InternalName} storeIndex={this.props.storeIndex} />:
                                     <Span internalName={this.props.internalName} value={this.props.item[accessor]} /> }
                                 </div>
                             ) 
-                           case 'Date':
+                           case 'DateTime':
                           
                             return(
                             <div>
@@ -55,7 +60,7 @@ class Field extends React.Component{
                                 <Span internalName={this.props.internalName} value={this.props.item[accessor]} /> } 
                             </div>
                             ) 
-                         case 'Choice':
+                         case 'Select':
                                 return ( 
                                 <div>
                                 {formName!=='Display'? <Select
@@ -63,6 +68,7 @@ class Field extends React.Component{
                                     internalName={this.props.internalName}
                                     className={'input input-' + this.props.InternalName}
                                     storeIndex={this.props.storeIndex}
+                                   
                                 />: 
                                 <Span internalName={this.props.internalName} value={this.props.item[accessor]} />}
                                  </div>
@@ -79,7 +85,19 @@ class Field extends React.Component{
                                 <Span internalName={this.props.internalName} value={this.props.item[accessor]} />}
 
                                 </div>
-                                ) 
+                                )
+                                case 'Lookup' :
+                                return(<div>
+                                    {formName!=='Display'?
+                                    <Lookup
+                                    render={LookupWid}
+                                    internalName={this.props.internalName}
+                                    className={'input input'+this.props.InternalName}
+                                    storeIndex={this.props.storeIndex}
+                                     />:
+                                     <Span internalName={this.props.internalName} value={this.props.item[accessor]}  />
+                                     }
+                                </div>)
                          case 'Note':
                            return(
                            <div>
@@ -98,6 +116,17 @@ class Field extends React.Component{
                              <Span internalName={this.props.internalName} value={this.props.item[accessor]} />}
                              </div>
                              )
+                             case 'File':
+                             console.log('storeIndex')
+                             return(<div>
+                                 {formName!=='Display'?<File render={FileWid} 
+                                 internalName={this.props.internalName} 
+                                 className={'input input-'+ this.props.InternalName}
+                                  storeIndex={this.props.storeIndex} />
+                                 :
+                                 <Span internalName={this.props.internalName} value={this.props.item[accessor]}/>}
+                             </div>
+                             )
 
                     }
                 })()}
@@ -114,5 +143,5 @@ class Field extends React.Component{
 
 }
 const mapStateToProps=(state,props)=>(
-    {field:state.columns[props.storeIndex].filter((field)=>field.accessor==props.internalName)[0],item:state.item[props.storeIndex]} )                                     
+    {field:state.columns[props.storeIndex].find((field)=>field.accessor==props.internalName),item:state.item[props.storeIndex]} )                                     
 export default connect(mapStateToProps)(Field)

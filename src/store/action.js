@@ -1,4 +1,4 @@
-import {ADD_ITEM,SET_ALL_ITEMS,SET_FIELD_VALUE,SET_ITEM,DELETE_ITEM,UPDATE_ITEM,SET_INFRACTION_FIELD_VALUE,SET_INFRACTION_ITEM,SET_COLUMNS,CHECKED_COLUMN} from './constant';
+import {ADD_ITEM,SET_ALL_ITEMS,SET_FIELD_VALUE,SET_ITEM,DELETE_ITEM,UPDATE_ITEM,SET_INFRACTION_FIELD_VALUE,SET_INFRACTION_ITEM,SET_COLUMNS,CHECKED_COLUMN, SET_DETAILS_ITEM,CHANGE_DETAIL_FIELD_VALUE} from './constant';
 
 export const addItem=(item,index)=>({
 
@@ -49,4 +49,16 @@ export const checkedColumn=(index,isChecked,internalName)=>({
     index,
     isChecked,
     internalName
+})
+export const setDetailsItem=(items,index)=>({
+    type:SET_DETAILS_ITEM,
+    items,
+    index
+})
+export const changeDetailFieldValue=(internalName,value,rowID,index)=>({
+    type:CHANGE_DETAIL_FIELD_VALUE,
+    internalName,
+    value,
+    rowID,
+    index
 })

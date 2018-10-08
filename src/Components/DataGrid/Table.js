@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {connect} from 'react-redux';
 import {moment} from 'moment-jalaali';
 import ItemRow from '../ItemRow';
@@ -29,7 +29,7 @@ const customStyles = {
         this.state={column:[], 
           showModal: false,
           selectedItem:{},formName:'',
-          
+          showWorkflowModal:false
         }
     }
 
@@ -52,7 +52,6 @@ const customStyles = {
      this.props.dispatch(deleteItem(row))
       }).catch((e)=>console.log(e))
     }
-   
   componentDidMount=(e)=>{
 
   
@@ -84,10 +83,12 @@ const customStyles = {
  Cell: row => (
    <span>
       <button onClick={ ()=> {this.setState({ showModal: true,selectedItem:row.original,formName:'Display' });}}>نمایش</button>
-       <button onClick={ ()=> {this.setState({ showModal: true,selectedItem:row.original,formName:'Edit' });}}>ویرایش</button>
-      <button onClick={()=> { removeItem(row.original['ID'],this.props.storeIndex).then((response)=>{
+      { this.props.showEdit ?<button onClick={ ()=> {this.setState({ showModal: true,selectedItem:row.original,formName:'Edit' });}}>ویرایش</button>:null}
+      { this.props.showRemove? <button onClick={()=> { removeItem(row.original['ID'],this.props.storeIndex).then((response)=>{
                                                                 this.props.dispatch(deleteItem(row.original,this.props.storeIndex))
-                                                                  }).catch((e)=>console.log(e))}} >حذف</button>                                                              
+     }).catch((e)=>console.log(e))}} >حذف</button> :null  }
+
+     {this.props.workFlow? <button onClick={()=>{this.setState({showModalWorkflow:true,selectedItem:row.original});}}>ورک فلو</button>:null}                                                           
 </span>
 ) 
 
@@ -103,8 +104,7 @@ const customStyles = {
               columns={columns}
               className="-striped -highlight"
           />
-          
-          <button  onClick={ ()=> {this.setState({ showModal: true,formName:'New'});}}>Add Item</button>
+          {(this.props.showNew)? <button   onClick={ ()=> {this.setState({ showModal: true,formName:'New'});}}>مورد جدید</button>:null}
 
            <div>
                 <Modal 
@@ -116,6 +116,16 @@ const customStyles = {
                   <button onClick={this.handleCloseModal}>بستن</button>
                 </Modal>
               </div>
+             <div>
+               {/* <Modal
+                  isOpen={this.state.showModalWorkflow}
+                  contentLabel="onRequestClose Example"
+                  onRequestClose={this.handleCloseModal}
+               >
+                 <this.props.workFlow selectedItem={this.state.selectedItem} storeIndex={this.props.storeIndex}/>
+                  <button onClick={this.handleCloseModal}>بستن</button>
+               </Modal> */}
+               </div>
       </div>
       //  <BootstrapTable   
       
