@@ -24,7 +24,7 @@ class WellVisitItem extends React.Component{
 
                 <div>
                     <ItemForm  storeIndex={this.props.storeIndex} {...this.props} />
-                    {this.props.formName=='Display'? <InfractionForm visitedID={this.props.item['ID']} profileID={this.props.item['Index']} {...this.props}  visitIndex={this.props.storeIndex} profileIndex='WellProfiles' storeIndex='WellViolations' />:null}
+                    {/* {this.props.formName=='Display'? <InfractionForm visitedID={this.props.item['ID']} profileID={this.props.item['Index']} {...this.props}  visitIndex={this.props.storeIndex} profileIndex='WellProfiles' storeIndex='WellViolations' />:null} */}
                 
                     </div>
             )

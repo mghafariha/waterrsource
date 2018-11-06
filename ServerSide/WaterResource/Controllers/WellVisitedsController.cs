@@ -14,12 +14,12 @@ namespace WaterResource.Controllers
 {
     public class WellVisitedsController : ApiController
     {
-        private WaterResourceContext db = new WaterResourceContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/WellVisiteds
         public IQueryable<WellVisited> GetWellVisiteds()
         {
-            return db.WellVisiteds;
+            return db.WellVisiteds.Include(a => a.WellProfile);
         }
 
         // GET: api/WellVisiteds/5
@@ -35,6 +35,19 @@ namespace WaterResource.Controllers
             return Ok(wellVisited);
         }
 
+        // GET: api/GetWellVisited/code
+        [ResponseType(typeof(WellVisited))]
+        public IHttpActionResult GetWellVisited(string code)
+        {
+            //WellProfile profle = db.WellProfiles.Where(a => a.Index == code).ToList().FirstOrDefault();
+            WellVisited wellVisited = db.WellVisiteds.Where(a => a.WellProfile.Index == code).ToList().OrderByDescending(a => a.DateRegistration).FirstOrDefault();
+            if (wellVisited == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(wellVisited);
+        }
         // PUT: api/WellVisiteds/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutWellVisited(int id, WellVisited wellVisited)

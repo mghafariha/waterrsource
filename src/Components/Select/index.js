@@ -7,39 +7,47 @@ class Select extends React.Component{
     constructor(props)
     {
         super(props);
-        
+       this.state={ selectedOption: null, multiValue: []}
     }
-    handleChange=(e)=>{
-
-        if (this.props.IsMulti) {
-            var options = e.target.options;
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.value !== this.props.value &&  nextProps.value) {
+          this.setState({selectedOption: nextProps.value.split(',').map(itm=>({value:itm, label:itm}))});
+        }
+      }
+    handleChange=(selectedOption)=>{
+        this.setState({ selectedOption });
+       var options = selectedOption;
+        if(Array.isArray(options))
+       {
             var value = "";
-            for (var i = 0, l = options.length; i < l; i++) {
-                if (options[i].selected) {
-                    value += (options[i].value) + ",";
-                }
-            }
+          
+         value=  options.reduce((acc, itm)=> {
+            return acc + itm.value + ",";
+          }, '');
             value.slice(0, -1);
-            this.props.dispatch(setFieldValue(this.props.internalName,value))
-        }
+            console.log('reduce',value)
+            this.props.dispatch(setFieldValue(this.props.internalName, value.slice(0, -1),this.props.storeIndex))
+            
+         }
         else {
-            this.props.dispatch(setFieldValue(this.props.internalName,e.target.value,this.props.storeIndex))
-        }
+             this.props.dispatch(setFieldValue(this.props.internalName,selectedOption.value,this.props.storeIndex))
+         }
     }
-    componentDidMount(){
-
-            this.props.dispatch(setFieldValue(this.props.internalName,this.props.field.Options[0],this.props.storeIndex));
+    // componentDidMount(){
+    //         console.log('selected ',this.props.value);
+    //         this.props.dispatch(setFieldValue(this.props.internalName,this.props.item[this.props.internalName],this.props.storeIndex));
+    //          this.setState({selectedOption:this.props.value.split(',').map(itm=>({value:itm, label:itm}))})
             
-            
-    }
+    // }
     render(){
-
-        let value=this.props.item[this.props.internalName] ;
-           return this.props.render({value,internalName:this.props.field.accessor,multiple:this.props.field.IsMulti,options:this.props.field.Options, onChange: this.handleChange })
+        const { selectedOption } = this.state;
+      //  let value=this.props.item[this.props.internalName] ;
+           return this.props.render({value: selectedOption,internalName:this.props.field.accessor,multiple:this.props.field.IsMulti,options:this.props.field.Options.map(opt=>({value: opt, label: opt})), onChange: this.handleChange })
     }
 }
 const mapStateToProps=(state,props)=>({
     item:state.item[props.storeIndex],
-    field:state.columns[props.storeIndex].find((field)=>field.accessor==props.internalName)
+    field:state.columns[props.storeIndex].find((field)=>field.accessor==props.internalName),
+    value:state.item[props.storeIndex][props.internalName]
  })
  export default connect(mapStateToProps)(Select)

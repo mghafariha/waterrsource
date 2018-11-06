@@ -1,43 +1,45 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Field from '../../../Components/Field';
+
 
   class StepOne extends React.Component{
     constructor(props){
 
         super(props);
+        this.state={ isChecked: this.props.isChecked}
     }
-    handleSubmit=(e)=>{
+    // componentWillReceiveProps(nextProps) {
+    //   if(nextProps.item !== this.props.item) {
+    //     if(nextProps.item['FileFirstWarning'])
+    //        this.setState({isChecked: true});
+    //   }
+    // }
+   
+    handleChange=(e)=>{
 
-      // e.preventDefault();
-           
-     
-    
-      // updateItem(this.props.item).then((response)=>{
-         
-  
-      //     this.props.dispatch(changeItem(this.props.item,this.props.storeIndex));
-      //     //this.getTitle.value='';
-      //   //  this.getDescription.value='';
-      //    this.props.dispatch(setItem({},this.props.storeIndex));
-  
-      // }).catch((error)=>console.log(error));
-  
-
+      this.setState({isChecked: !this.state.isChecked})
     }
 
     render(){
-       const fields=[{accessor:'FileFirstWarning',Header:'فایل اخطار اول',type:'File',isRequired:'True'},{accessor:'DateFirstWarning',Header:'تاریخ اخطار اول',type:'Date','isRequired':'True'}]
-      return(<form onSubmit={this.handleSubmit} >
-         { this.props.fields.map((field,index)=><Field 
-          key={field.accessor}
-          internalName={field.accessor}
-          storeIndex='WellViolations'
-          formName='New'
-        
+      const fields=[{accessor:'FileFirstWarning',Header:'فایل اخطار اول',type:'File',isRequired:'True'},{accessor:'DateFirstWarning',Header:'تاریخ اخطار اول',type:'DateTime','isRequired':'True'}]
+     
+      return(<div>
+       اخطار اول <input type='checkbox' onChange={this.handleChange}  checked={this.state.isChecked} />
+         { this.state.isChecked?  <div >
+          { fields.map((field,index)=><Field 
+            key={field.accessor}
+            internalName={field.accessor}
+            storeIndex='WellViolations'
+            formName={this.props.item[field.accessor]?'Edit':'New'}
+            
           />)}
-          <button type='submit'>Submit</button>
-      </form>)
+          </div>:null}
+          </div>)
         
     }
   }
-  export default StepOne
+  const mapStateToProps=(state,props)=>({
+    columns:state.columns['WellViolations'],item:state.item['WellViolations']
+  })
+  export default connect(mapStateToProps)(StepOne)

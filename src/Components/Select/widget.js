@@ -1,15 +1,20 @@
 import React from 'react';
+import Select from 'react-select'
 
 const SelectWid=({value,internalName,multiple,options,onChange})=>(
-    <select id={internalName}
+    <Select id={internalName}
            onChange={onChange}
-           multiple={multiple}
-           name={internalName}
-          
-    >
-    {options.map((opt,index)=>(<option key={index} value={opt} selected={opt==value?'selected':''} >{opt}</option>))}
+           isMulti={multiple}
+           name={internalName} 
+           options={options}
+           placeholder='انتخاب ...'
+           value={value}
+           
+    />
+    //  <option value={null}>----</option>
+    // {options.map((opt,index)=>(<option key={index} value={opt} selected={opt==value?'selected':''} >{opt}</option>))}
 
-    </select>
+    // </select> 
 )
 export default SelectWid
 

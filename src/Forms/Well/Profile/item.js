@@ -10,14 +10,12 @@ import {saveItem,getItem,updateItem} from '../../../api';
 import Modal from 'react-modal';
 
 
+
 class WellProfileItem extends React.Component{
         constructor(props){
             super(props);
-           
+          
         }    
-        componentDidMount=(e)=>{
-           
- }
 
     render(){
     
@@ -25,8 +23,6 @@ class WellProfileItem extends React.Component{
 
             <div>
                 <ItemForm  storeIndex={this.props.storeIndex} {...this.props} />
-               
-               
                 </div>
         )
     }

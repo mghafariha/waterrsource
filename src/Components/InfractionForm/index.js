@@ -9,6 +9,7 @@ import { setInfractionItem } from '../../store/action';
 import {Criterions} from './Criterions';
 import {setDetailsItem,changeItem,setItem} from '../../store/action';
 import axios from 'axios';
+import Loader from '../Loader'
 
 
 
@@ -17,20 +18,22 @@ class InfractionForm extends React.Component{
 constructor(props){
     super(props);
     this.state={profileItem:{}
-                , criterions:[] }
+                , criterions:[],loading:true }
 
 
 }
 componentDidMount=(e)=>{
-
+   
     getItem(this.props.selectedItem['Index'],this.props.profileIndex).then((result)=>{
        
         this.setState({profileItem:result.data});
         this.setState({criterions:Criterions})
         this.props.dispatch(setDetailsItem(Criterions.map((itm,index)=>(Object.assign({},{Criterion:itm,Description:'',isChecked:false,rowId:index}))),this.props.storeIndex));
+        this.setState({loading:false})
         }).catch((error)=>console.log(error));
 }
 handleSubmitInfraction=(e)=>{
+    this.setState({loading:true})
     e.preventDefault();
    let violations=this.props.item.rows.filter((itm)=>itm.isChecked);
    let data={NumberInFraction:violations.length,Violations:violations.reduce((acc,itm)=>acc+itm.Criterion+',','')}
@@ -45,6 +48,7 @@ handleSubmitInfraction=(e)=>{
         axios.all(arrayPost).then((resp)=>
         {
             alert('آیتم جدید با موفقیت ذخیره شد');
+            this.setState({loading:false})
         //  this.props.dispatch(changeItem(this.props.item,this.props.storeIndex));
         //  this.props.dispatch(setItem({},this.props.storeIndex));
         });
@@ -55,7 +59,7 @@ handleSubmitInfraction=(e)=>{
   
 }
 render(){
-    return(<div>
+    return( <div>
        <div>
           <div>
                 <span>عمق چاه</span>شناسنامه ای <span>{this.state.profileItem.WellDepth}</span>بازدید<span>{this.props.selectedItem.WellDepth}</span>اختلاف<span>{this.props.selectedItem.WellDepth}</span>
@@ -70,7 +74,7 @@ render(){
             <br/>
         <div>
             <form onSubmit={this.handleSubmitInfraction}>
-                ثبت تخلف
+               <h1> ثبت تخلف </h1>
                 {
                 (this.props.item)&&this.props.item.rows ?
                   this.props.item.rows.map((crt)=><div key={crt.rowId}>

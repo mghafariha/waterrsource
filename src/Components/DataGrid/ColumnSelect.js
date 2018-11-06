@@ -12,14 +12,14 @@ class ColumnSelect extends React.Component{
     
     
     render(){
-    console.log('columnsssssss1',this.props.columns)
+    
       let storeIndex= this.props.storeIndex;
-        return(<div>{
+        return(<div  className='check-box-items'>{
         this.props.columns.map((col,index) => 
-            <label key={col.accessor}>
+            <div className='check-item' key={col.accessor}>
               {col.Header}
               <CheckBox  internalName={col.accessor}  storeIndex={storeIndex} isChecked={col.isChecked} />
-             </label> 
+             </div> 
               
           )
          }

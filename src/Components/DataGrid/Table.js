@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux';
-import {moment} from 'moment-jalaali';
+import moment from 'moment-jalaali';
 import ItemRow from '../ItemRow';
 import ItemForm from '../ItemForm';
 import {getAllVisitItem,removeItem} from '../../api';
@@ -18,7 +18,8 @@ const customStyles = {
   right                 : 'auto',
   bottom                : 'auto',
   marginRight           : '-50%',
-  transform             : 'translate(-50%, -50%)'
+  transform             : 'translate(-50%, -50%)',
+ 
   }
   }
 
@@ -32,7 +33,7 @@ const customStyles = {
           showWorkflowModal:false
         }
     }
-
+    
     handleClick(event) {  // switch the value of the showModal state
       this.setState({
         showModal: !this.state.showModal
@@ -47,6 +48,16 @@ const customStyles = {
       this.props.dispatch(setItem({},this.props.storeIndex));
       this.setState({selectedItem:{}})
     }
+    handleOpenWorkFlowModal =(e)=> {
+          
+          this.setState({ showWorkflowModal: true });
+    }
+    
+    handleCloseWorkFlowModal =(e)=> {
+      this.setState({ showWorkflowModal: false });
+      this.props.dispatch(setItem({},this.props.storeIndex));
+      this.setState({selectedItem:{}})
+    }
     removeClick=(row)=>{
      removeItem(row['ID']).then((response)=>{
      this.props.dispatch(deleteItem(row))
@@ -56,7 +67,7 @@ const customStyles = {
 
   
         this.setState({itemIndex:this.props.itemIndex})
-       console.log('items',this.state.itemIndex);
+       
       //  this.setState({datasource:this.props.items.map((itm,index)=>({...itm,key:index}))})   ;
      
   }
@@ -64,7 +75,7 @@ const customStyles = {
 
 
     // const TagName = this.components[this.props.itemIndex || 'foo'];
-    console.log('collll',this.props);  
+   
     Object.assign(ReactTableDefaults, {
       defaultPageSize: 5,
       minRows: 3
@@ -72,60 +83,104 @@ const customStyles = {
     });
 
    
+ let columns = this.props.columns.filter(col=>col.isChecked);
+  var clm=  columns.map((column)=>({
+  Header: column.Header,
+  id: column.accessor,
+ // accessor:  props => <div> {moment(props.value).format('YY/MM/DD')} </div>
+  accessor:column.accessor,
+ Cell: ( row) => (
+   <span>
+   
+    {(() => { 
+             switch (column.type) {
+                 case 'DateTime':
+                    return(
+               row.value!=null?moment(row.value).format('jYYYY/jMM/jDD'):' ----- ')
+                  case 'Lookup':
+                  return(
+                    row.original[(column.accessor.substring(0,column.accessor.length-2))][column['TitleField']]
+                  )
+                  case 'File':
+                  return (
+               
+                     <a href={row.value}>{column.Header}</a>
+                  )
+                  default:
+                  return (
+                    row.value
+                  )
+                }
+            })()
+                
+     }
+                                                                
+    </span>
+       ) 
+ }))
 
+{console.log('clm',clm)};
 
- let columns = this.props.columns.filter(col=>col.isChecked)
- columns.push({
+ clm.push({
   Header: 'عملیات',
   id: 'action',
  // accessor:  props => <div> {moment(props.value).format('YY/MM/DD')} </div>
  accessor:'Action',
  Cell: row => (
-   <span>
-      <button onClick={ ()=> {this.setState({ showModal: true,selectedItem:row.original,formName:'Display' });}}>نمایش</button>
-      { this.props.showEdit ?<button onClick={ ()=> {this.setState({ showModal: true,selectedItem:row.original,formName:'Edit' });}}>ویرایش</button>:null}
-      { this.props.showRemove? <button onClick={()=> { removeItem(row.original['ID'],this.props.storeIndex).then((response)=>{
+   <span className='operation-feild' >
+       <button alt='نمایش' className='view-item  fa fa-eye fa-lg ' onClick={ ()=> {this.setState({ showModal: true,selectedItem:row.original,formName:'Display' });}}></button>
+      { this.props.showEdit ?<button className='edit-item fa fa-pencil-square-o fa-lg  ' onClick={ ()=> {this.setState({ showModal: true,selectedItem:row.original,formName:'Edit' });}}></button>:null}
+      { this.props.showRemove? <button className='delet-item edit-item fa fa fa-trash-o fa-lg ' onClick={()=> { removeItem(row.original['ID'],this.props.storeIndex).then((response)=>{
                                                                 this.props.dispatch(deleteItem(row.original,this.props.storeIndex))
-     }).catch((e)=>console.log(e))}} >حذف</button> :null  }
+                                                                alert('آیتم با موفقیت حذف شد')
+     }).catch((e)=>console.log(e))}} ></button> :null  }
 
-     {this.props.workFlow? <button onClick={()=>{this.setState({showModalWorkflow:true,selectedItem:row.original});}}>ورک فلو</button>:null}                                                           
-</span>
+     {this.props.workFlow? <button className='fa fa-retweet fa-lg  '  onClick={()=>{this.setState({showWorkflowModal:true,selectedItem:row.original});}}> </button>:null}                                                           
+   </span>
 ) 
 
 })
+
   return(
-     <div>
+     <div className='data-grid' >
         <ReactTable
               data={this.props.items.map((itm,index)=>({...itm,key:index}))}
               noDataText="اطلاعاتی وجود ندارد"
               filterable
               defaultFilterMethod={(filter, row) =>
-                String(row[filter.id]) === filter.value}
-              columns={columns}
+                //String(row[filter.id]) === filter.value}
+                String(row[filter.id]).startsWith( filter.value)}
+              columns={clm}
               className="-striped -highlight"
           />
-          {(this.props.showNew)? <button   onClick={ ()=> {this.setState({ showModal: true,formName:'New'});}}>مورد جدید</button>:null}
+          {(this.props.showNew)? <button  className='fa fa-plus-square fa-lg'  onClick={ ()=> {this.setState({ showModal: true,formName:'New'});}}></button>:null}
 
            <div>
                 <Modal 
                    isOpen={this.state.showModal}
                    contentLabel="onRequestClose Example"
                    onRequestClose={this.handleCloseModal}
+                   shouldCloseOnOverlayClick={false}
+                   
                 >
-                  <this.props.itemIndex formName={this.state.formName} selectedItem={this.state.selectedItem} storeIndex={this.props.storeIndex}/>
-                  <button onClick={this.handleCloseModal}>بستن</button>
+                 <div className='close-btt' onClick={this.handleCloseModal}>✖</div>
+                  <this.props.itemIndex formName={this.state.formName} selectedItem={this.state.selectedItem} storeIndex={this.props.storeIndex} closeAfterSave={this.handleCloseModal}/>
+                 
                 </Modal>
               </div>
-             <div>
-               {/* <Modal
-                  isOpen={this.state.showModalWorkflow}
+            { this.props.workFlow? <div>
+               <Modal
+                 
+                  isOpen={this.state.showWorkflowModal}
                   contentLabel="onRequestClose Example"
-                  onRequestClose={this.handleCloseModal}
+                  onRequestClose={this.handleCloseWorkFlowModal}
+                  shouldCloseOnOverlayClick={false}
                >
-                 <this.props.workFlow selectedItem={this.state.selectedItem} storeIndex={this.props.storeIndex}/>
-                  <button onClick={this.handleCloseModal}>بستن</button>
-               </Modal> */}
-               </div>
+                <div className='close-btt' onClick={this.handleCloseWorkFlowModal}>✖</div>
+                 <this.props.workFlow selectedItem={this.state.selectedItem} storeIndex={this.props.storeIndex} closeAfterSave={this.handleCloseWorkFlowModal} />
+                 
+               </Modal> 
+               </div>:null}
       </div>
       //  <BootstrapTable   
       
